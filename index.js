@@ -59,7 +59,7 @@ let storage = [...DUMMY_DATA];
 finalScorer(storage);
 
 function init() {
-  for (let i = 0; i < storage.length; i++) {
+  for (let i = 0; i < 3; i++) {
     const element = storage[i];
     // console.log(element);
     const colSm4 = document.createElement("div");
@@ -88,19 +88,25 @@ function init() {
     card.appendChild(cardBody);
     colSm4.appendChild(card);
     newsList.appendChild(colSm4);
+  }
 
+  for (const [i, element] of storage.entries()) {
     const tableRow = document.createElement("tr");
     const tableTh = document.createElement("th");
     tableTh.scope = "row";
     tableTh.innerText = i + 1;
     const tableTd1 = document.createElement("td");
     tableTd1.innerText = element.title;
+    tableTd1.style.textAlign = "left";
     const tableTd2 = document.createElement("td");
     tableTd2.innerText = element.score;
+    const tableTd3 = document.createElement("td");
+    tableTd3.innerHTML = `<i class="bi bi-trash3"></i>`;
 
     tableRow.appendChild(tableTh);
     tableRow.appendChild(tableTd1);
     tableRow.appendChild(tableTd2);
+    tableRow.appendChild(tableTd3);
     newsTable.appendChild(tableRow);
   }
 }
@@ -114,7 +120,19 @@ const formAuthor = document.getElementById("author");
 
 addBtn.addEventListener("click", (event) => {
   event.preventDefault(); // stop refresh
-  addNews();
+  const title = formTitle.value.trim();
+  const author = formAuthor.value.trim();
+  const id = createId(storage);
+  console.log(title.length, author.length);
+
+  if (title.length === 0) {
+    return;
+  }
+  if (author.length === 0) {
+    return;
+  }
+
+  addNews(title, author, id);
 });
 
 const createId = (data) => {
@@ -127,11 +145,37 @@ const createId = (data) => {
   return newID;
 };
 
-function addNews() {
+// validation form
+function checkForm() {
+  const title = formTitle.value.trim();
+  const author = formAuthor.value.trim();
+
+  if (title === "") {
+    formTitle.style.borderColor = "red";
+  }
+  if (author === "") {
+    formAuthor.style.borderColor = "red";
+  }
+}
+
+addBtn.addEventListener("click", checkForm, true);
+
+function removeError() {
   const title = formTitle.value;
   const author = formAuthor.value;
-  const id = createId(storage);
 
+  if (title !== "") {
+    formTitle.style.borderColor = "unset";
+  }
+  if (author !== "") {
+    formAuthor.style.borderColor = "unset";
+  }
+}
+
+formTitle.addEventListener("keydown", removeError);
+formAuthor.addEventListener("keydown", removeError);
+
+function addNews(title, author, id) {
   let data = {
     id,
     title,
@@ -144,7 +188,7 @@ function addNews() {
   console.log(storage);
   // panggil function finalScorer
   finalScorer(storage);
-  showCard();
+  // showCard();
   showTable();
 }
 // end form submission
@@ -152,39 +196,39 @@ function addNews() {
 // create show card
 // const newsList = document.querySelector("#newsList");
 
-function showCard() {
-  // console.log(DUMMY_DATA);
-  // for (let i = 0; i < storage.length; i++) {
-  const element = storage[storage.length - 1];
-  // console.log(element);
-  const colSm4 = document.createElement("div");
-  colSm4.classList.add("col-sm-4");
-  colSm4.classList.add("mb-3");
-  const card = document.createElement("div");
-  card.classList.add("card");
-  const cardBody = document.createElement("div");
-  cardBody.classList.add("card-body");
-  const cardTitle = document.createElement("h5");
-  cardTitle.classList.add("card-title");
-  cardTitle.innerText = element.title;
-  const cardText = document.createElement("p");
-  cardText.classList.add("card-text");
-  cardText.innerText = `Score this headline is ${element.score}`;
-  // <a href="#" class="btn btn-primary">Go somewhere</a>
-  const btnCard = document.createElement("a");
-  btnCard.classList.add("btn");
-  btnCard.classList.add("btn-primary");
-  btnCard.href = "#";
-  btnCard.innerText = "Go somewhere";
+// function showCard() {
+//   // console.log(DUMMY_DATA);
+//   // for (let i = 0; i < storage.length; i++) {
+//   const element = storage[storage.length - 1];
+//   // console.log(element);
+//   const colSm4 = document.createElement("div");
+//   colSm4.classList.add("col-sm-4");
+//   colSm4.classList.add("mb-3");
+//   const card = document.createElement("div");
+//   card.classList.add("card");
+//   const cardBody = document.createElement("div");
+//   cardBody.classList.add("card-body");
+//   const cardTitle = document.createElement("h5");
+//   cardTitle.classList.add("card-title");
+//   cardTitle.innerText = element.title;
+//   const cardText = document.createElement("p");
+//   cardText.classList.add("card-text");
+//   cardText.innerText = `Score this headline is ${element.score}`;
+//   // <a href="#" class="btn btn-primary">Go somewhere</a>
+//   const btnCard = document.createElement("a");
+//   btnCard.classList.add("btn");
+//   btnCard.classList.add("btn-primary");
+//   btnCard.href = "#";
+//   btnCard.innerText = "Go somewhere";
 
-  cardBody.appendChild(cardTitle);
-  cardBody.appendChild(cardText);
-  cardBody.appendChild(btnCard);
-  card.appendChild(cardBody);
-  colSm4.appendChild(card);
-  newsList.appendChild(colSm4);
-  // }
-}
+//   cardBody.appendChild(cardTitle);
+//   cardBody.appendChild(cardText);
+//   cardBody.appendChild(btnCard);
+//   card.appendChild(cardBody);
+//   colSm4.appendChild(card);
+//   newsList.appendChild(colSm4);
+//   // }
+// }
 // end show card
 
 // showTable
@@ -200,6 +244,7 @@ function showTable() {
   tableTh.innerText = storage.length;
   const tableTd1 = document.createElement("td");
   tableTd1.innerText = element.title;
+  tableTd1.style.textAlign = "left";
   const tableTd2 = document.createElement("td");
   tableTd2.innerText = element.score;
 
@@ -209,6 +254,8 @@ function showTable() {
   newsTable.appendChild(tableRow);
   // }
 }
+
+function showHeadlineNews() {}
 
 function allUpperCaseScorer(arrObject) {
   //Cek semua huruf kapital semua atau engga
