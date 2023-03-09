@@ -2,7 +2,7 @@
 const DUMMY_DATA = [
   {
     id: 1,
-    title: "MANCHESTER PAYAH BANGET",
+    title: "MANCHESTER PAYAH TUJUH KOSONG!!!",
     author: "fachry",
     score: 0,
     imgUrl: "",
@@ -30,7 +30,7 @@ const DUMMY_DATA = [
   },
   {
     id: 5,
-    title: "Pemilu 2024 mungkin ditiadakan berkat Euro",
+    title: "Pemilu 2024 mungkin  ditiadakan berkat Euro",
     author: "dimas",
     score: 0,
     imgUrl: "",
@@ -281,8 +281,18 @@ function allUpperCaseScorer(arrObject) {
 }
 ///console.log(allUpperCaseScorer(DUMMY_DATA))
 
-function firstWordUpperCaseScorer(arrObject) {
+function doubleSpace(arrObject) {
   // console.log(arrObject);
+  let status = false;
+  for (const e of arrObject) {
+    for (let i = 0; i < e.title.length; i++) {
+      if (e.title[i] === " " && e.title[i + 1] === " ") {
+        status = true;
+      }
+    }
+    e.doubleSpace = status;
+  }
+  return arrObject;
 }
 //console.log(firstWordUpperCaseScorer(DUMMY_DATA))
 
@@ -301,7 +311,6 @@ function specialCharacterScorer(arrObject) {
   }
   return arrObject;
 }
-// console.log(specialCharacterScorer(DUMMY_DATA))
 
 function findWord(arr) {
   for (const e of arr) {
@@ -309,6 +318,7 @@ function findWord(arr) {
 
     let worded = 0;
     let kategori = "";
+    let kalimat = false;
 
     for (let i = 0; i < titled.length; i++) {
       if (titled[i] === " ") {
@@ -317,6 +327,16 @@ function findWord(arr) {
         worded += 1;
       }
     }
+    for (let j = 0; j < titled.length; j++) {
+      if (titled[j] === ".") {
+        kalimat = true;
+        break;
+      } else if (titled[titled.length - 1] === ".") {
+        kalimat = false;
+        break;
+      }
+    }
+    e["sentence"] = kalimat;
     e["word"] = worded;
     if (e["word"] < 4) {
       kategori = "short";
@@ -325,32 +345,56 @@ function findWord(arr) {
     } else if (e["word"] > 5) {
       kategori = "long";
     }
-    e["Sentence Category"] = kategori;
+    e["category"] = kategori;
   }
   return arr;
 }
-// console.log(findWord(DUMMY_DATA))
 
 function finalScorer(arrObject) {
   /////////  PAKE FUNCTION YANG INI
   findWord(arrObject);
   specialCharacterScorer(arrObject);
   allUpperCaseScorer(arrObject);
+  doubleSpace(arrObject);
 
   for (const e of arrObject) {
-    let scr = 0;
+    let scr = 7;
     if (e.UpperCaseStatus === true) {
       scr++;
     }
-    if (e.specChar > 2) {
+    if (e.specChar > 1 && e.specChar <= 3) {
       scr++;
     }
     if (e["Sentence Category"] === "medium") {
       scr++;
     }
+    if (e.sentence === true) {
+      scr--;
+    }
+    if (e.specChar > 3) {
+      scr--;
+    }
+    if (e.title.length > 28 && e.title.length < 36) {
+      scr++;
+    }
+    if (doubleSpace === true) {
+      scr--;
+    }
+
     e.score = scr;
   }
-
+  for (const e of arrObject) {
+    if (e.score < 6) {
+      e.message = "It can be improved";
+    } else if (e.score === 6) {
+      e.message = "Good, But we can make it better";
+    } else if (e.score > 7 && e.score < 9) {
+      e.message = "Well, a slight improvement is needed";
+    } else if (e.score >= 9) {
+      e.message = "This is the title that rings in people's ears";
+    }
+  }
+  console.log(arrObject);
   return arrObject;
 }
 
