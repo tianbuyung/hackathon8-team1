@@ -280,18 +280,15 @@ function findWord(arr){
    
    let worded = 0
    let kategori = ""  
-   
+   let kalimat = false
    
    
    for(let i = 0; i < titled.length; i++){
-       if(titled[i] === " "){
-         worded += 1
-       }else if(i === titled[i].length -1){
-           worded += 1
-       }
+     if(titled[i] === " "){
+       worded += 1
+     }else if(i === titled[i].length -1){
+       worded += 1
      }
-<<<<<<< HEAD
-=======
    }
    for(let j = 0; j < titled.length; j++){
      
@@ -304,7 +301,6 @@ function findWord(arr){
           }
      }
  e["sentence"] = kalimat
->>>>>>> ae1c140 (Fachry Nugraha final final scoring)
  e["word"] = worded
  if(e["word"] < 4){
    kategori = "short"
@@ -314,7 +310,7 @@ function findWord(arr){
    kategori = "long"
 }
 e["category"] = kategori
- console.log(e["word"])
+ 
  }
   return arr
 } 
