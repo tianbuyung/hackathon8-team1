@@ -102,3 +102,39 @@ function specialCharacterScorer(arrObject)
   return arrObject
 }
 console.log(specialCharacterScorer(DUMMY_DATA))
+
+
+function findWord(arr){
+    
+
+  for(const e of arr){
+   
+   
+   let titled = e.title
+   
+   let worded = 0
+   let kategori = ""  
+   
+   
+   
+   for(let i = 0; i < titled.length; i++){
+       if(titled[i] === " "){
+         worded += 1
+       }else if(i === titled[i].length -1){
+           worded += 1
+       }
+     }
+ e["word"] = worded
+ if(e["word"] < 4){
+   kategori = "short"
+}else if(e["word"] < 5 ){
+   kategori = "medium"
+}else if(e["word"] > 5){
+   kategori = "long"
+}
+e["category"] = kategori
+ console.log(e["word"])
+ }
+  return arr
+} 
+console.log(findWord(DUMMY_DATA))
