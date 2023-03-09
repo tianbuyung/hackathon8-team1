@@ -73,7 +73,7 @@ function allUpperCaseScorer(arrObject) //Cek semua huruf kapital semua atau engg
   return arrObject
 
 }
-//console.log(allUpperCaseScorer(DUMMY_DATA))
+///console.log(allUpperCaseScorer(DUMMY_DATA))
 
 function firstWordUpperCaseScorer(arrObject)
 {
