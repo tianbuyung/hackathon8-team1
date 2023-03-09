@@ -1,4 +1,4 @@
-// render function
+// Initialization function
 const DUMMY_DATA = [
   {
     id: 1,
@@ -52,10 +52,15 @@ const DUMMY_DATA = [
 ];
 
 const newsList = document.querySelector("#newsList");
+const newsTable = document.getElementById("newsTable");
+
+let storage = [...DUMMY_DATA];
+
+finalScorer(storage);
 
 function init() {
-  for (let i = 0; i < DUMMY_DATA.length; i++) {
-    const element = DUMMY_DATA[i];
+  for (let i = 0; i < storage.length; i++) {
+    const element = storage[i];
     // console.log(element);
     const colSm4 = document.createElement("div");
     colSm4.classList.add("col-sm-4");
@@ -83,11 +88,24 @@ function init() {
     card.appendChild(cardBody);
     colSm4.appendChild(card);
     newsList.appendChild(colSm4);
+
+    const tableRow = document.createElement("tr");
+    const tableTh = document.createElement("th");
+    tableTh.scope = "row";
+    tableTh.innerText = i + 1;
+    const tableTd1 = document.createElement("td");
+    tableTd1.innerText = element.title;
+    const tableTd2 = document.createElement("td");
+    tableTd2.innerText = element.score;
+
+    tableRow.appendChild(tableTh);
+    tableRow.appendChild(tableTd1);
+    tableRow.appendChild(tableTd2);
+    newsTable.appendChild(tableRow);
   }
 }
-init();
 
-let storage = [];
+init();
 
 // form submission
 const addBtn = document.getElementById("addBtn");
@@ -124,6 +142,8 @@ function addNews() {
   console.log(data);
   storage.push(data);
   console.log(storage);
+  // panggil function finalScorer
+  finalScorer(storage);
   showCard();
   showTable();
 }
@@ -168,7 +188,7 @@ function showCard() {
 // end show card
 
 // showTable
-const newsTable = document.getElementById("newsTable");
+// const newsTable = document.getElementById("newsTable");
 
 function showTable() {
   // for (let i = 0; i < storage.length; i++) {
