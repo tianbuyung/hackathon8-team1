@@ -12,7 +12,7 @@ const DUMMY_DATA = [
     score: 0,
   },
   {
-    title: "MANCHESTER PAYAH BANGET!!!",
+    title: "MANCHESTER PAYAH BANGET COY!!!",
     author: "fahri",
     score: 0,
   },
@@ -101,7 +101,7 @@ function specialCharacterScorer(arrObject)
   }
   return arrObject
 }
-console.log(specialCharacterScorer(DUMMY_DATA))
+// console.log(specialCharacterScorer(DUMMY_DATA))
 
 
 function findWord(arr){
@@ -132,9 +132,38 @@ function findWord(arr){
 }else if(e["word"] > 5){
    kategori = "long"
 }
-e["category"] = kategori
- console.log(e["word"])
+e["Sentence Category"] = kategori
+ 
  }
   return arr
 } 
-console.log(findWord(DUMMY_DATA))
+// console.log(findWord(DUMMY_DATA))
+
+function finalScorer (arrObject) /////////  PAKE FUNCTION YANG INI
+{
+  findWord(arrObject)
+  specialCharacterScorer(arrObject)
+  allUpperCaseScorer(arrObject)
+
+  for(const e of arrObject)
+  {
+    let scr = 0
+    if(e.UpperCaseStatus === true)
+    {
+      scr++
+    }
+    if(e.specChar > 2)
+    {
+      scr++
+    } 
+    if(e["Sentence Category"] === 'medium')
+    {
+      scr++
+    }
+    e.score = scr
+  }
+
+  return arrObject
+}
+
+console.log(finalScorer(DUMMY_DATA))
