@@ -212,7 +212,7 @@ function allUpperCaseScorer(arrObject) {
 
   return arrObject;
 }
-//console.log(allUpperCaseScorer(DUMMY_DATA))
+///console.log(allUpperCaseScorer(DUMMY_DATA))
 
 function firstWordUpperCaseScorer(arrObject) {
   // console.log(arrObject);
@@ -234,4 +234,57 @@ function specialCharacterScorer(arrObject) {
   }
   return arrObject;
 }
-// console.log(specialCharacterScorer(DUMMY_DATA));
+// console.log(specialCharacterScorer(DUMMY_DATA))
+
+function findWord(arr) {
+  for (const e of arr) {
+    let titled = e.title;
+
+    let worded = 0;
+    let kategori = "";
+
+    for (let i = 0; i < titled.length; i++) {
+      if (titled[i] === " ") {
+        worded += 1;
+      } else if (i === titled[i].length - 1) {
+        worded += 1;
+      }
+    }
+    e["word"] = worded;
+    if (e["word"] < 4) {
+      kategori = "short";
+    } else if (e["word"] < 5) {
+      kategori = "medium";
+    } else if (e["word"] > 5) {
+      kategori = "long";
+    }
+    e["Sentence Category"] = kategori;
+  }
+  return arr;
+}
+// console.log(findWord(DUMMY_DATA))
+
+function finalScorer(arrObject) {
+  /////////  PAKE FUNCTION YANG INI
+  findWord(arrObject);
+  specialCharacterScorer(arrObject);
+  allUpperCaseScorer(arrObject);
+
+  for (const e of arrObject) {
+    let scr = 0;
+    if (e.UpperCaseStatus === true) {
+      scr++;
+    }
+    if (e.specChar > 2) {
+      scr++;
+    }
+    if (e["Sentence Category"] === "medium") {
+      scr++;
+    }
+    e.score = scr;
+  }
+
+  return arrObject;
+}
+
+console.log(finalScorer(DUMMY_DATA));
