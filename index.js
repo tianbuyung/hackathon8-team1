@@ -53,14 +53,17 @@ const DUMMY_DATA = [
 
 const newsList = document.querySelector("#newsList");
 const newsTable = document.getElementById("newsTable");
+const titleNewsList = document.getElementById("title-news-list");
 
 let storage = [...DUMMY_DATA];
 
 finalScorer(storage);
 
-function init() {
-  for (let i = 0; i < 3; i++) {
-    const element = storage[i];
+function init(iniStorage) {
+  let length = 3;
+  if (iniStorage.length < 3) length = iniStorage.length;
+  for (let i = 0; i < length; i++) {
+    const element = iniStorage[i];
     // console.log(element);
     const colSm4 = document.createElement("div");
     colSm4.classList.add("col-sm-4");
@@ -90,7 +93,7 @@ function init() {
     newsList.appendChild(colSm4);
   }
 
-  for (const [i, element] of storage.entries()) {
+  for (const [i, element] of iniStorage.entries()) {
     const tableRow = document.createElement("tr");
     const tableTh = document.createElement("th");
     tableTh.scope = "row";
@@ -101,38 +104,86 @@ function init() {
     const tableTd2 = document.createElement("td");
     tableTd2.innerText = element.score;
     const tableTd3 = document.createElement("td");
-    tableTd3.innerHTML = `<i class="bi bi-trash3"></i>`;
+    // tableTd3.innerHTML =
+    // "<i class='bi bi-trash3' id=`${element.id}` onclick='deleteFunction(this.id)'></i>";
+    const iconTrash = document.createElement("i");
+    iconTrash.classList.add("bi");
+    iconTrash.classList.add("bi-trash3");
+    iconTrash.id = `delete-${element.id}`;
+    iconTrash.addEventListener("click", () => {
+      deleteFunction(event, element.id);
+    });
 
     tableRow.appendChild(tableTh);
     tableRow.appendChild(tableTd1);
     tableRow.appendChild(tableTd2);
     tableRow.appendChild(tableTd3);
+    tableTd3.appendChild(iconTrash);
     newsTable.appendChild(tableRow);
+
+    // const deleteData = document.getElementById("delete");
+    // console.log(deleteData);
+    // deleteData.onclick = deleteData(element.id);
+  }
+
+  for (const element of iniStorage) {
+    // console.log(element);
+    const list = document.createElement("li");
+    list.innerText = element.title;
+
+    titleNewsList.appendChild(list);
   }
 }
 
-init();
+init(storage);
+let newStorage = [...storage];
+
+function deleteFunction(event, id) {
+  // alert(id);
+  // const item = document.getElementById(id);
+  // item.remove();
+  // console.log(storage);
+  // console.log(id);
+  newStorage = newStorage.filter((data) => data.id !== id);
+  // console.log(newStorage);
+  // console.log(DUMMY_DATA);
+  // console.log(storage);
+  // console.log(newStorage);
+  removeElement();
+  init(newStorage);
+}
+
+function removeElement() {
+  while (newsList.firstChild) {
+    newsList.removeChild(newsList.firstChild);
+  }
+  while (newsTable.firstChild) {
+    newsTable.removeChild(newsTable.firstChild);
+  }
+}
 
 // form submission
 const addBtn = document.getElementById("addBtn");
 const formTitle = document.getElementById("title");
 const formAuthor = document.getElementById("author");
+const form = document.getElementById("form-input");
 
 addBtn.addEventListener("click", (event) => {
   event.preventDefault(); // stop refresh
   const title = formTitle.value.trim();
   const author = formAuthor.value.trim();
   const id = createId(storage);
-  console.log(title.length, author.length);
+  // console.log(title.length, author.length);
 
-  if (title.length === 0) {
+  if (title.length === 0 || title.length < 5) {
     return;
   }
-  if (author.length === 0) {
+  if (author.length === 0 || title.length < 5) {
     return;
   }
 
   addNews(title, author, id);
+  form.reset();
 });
 
 const createId = (data) => {
@@ -150,10 +201,10 @@ function checkForm() {
   const title = formTitle.value.trim();
   const author = formAuthor.value.trim();
 
-  if (title === "") {
+  if (title === "" || title.length < 5) {
     formTitle.style.borderColor = "red";
   }
-  if (author === "") {
+  if (author === "" || title.length < 5) {
     formAuthor.style.borderColor = "red";
   }
 }
@@ -164,10 +215,10 @@ function removeError() {
   const title = formTitle.value;
   const author = formAuthor.value;
 
-  if (title !== "") {
+  if (title !== "" || title.length > 5) {
     formTitle.style.borderColor = "unset";
   }
-  if (author !== "") {
+  if (author !== "" || title.length > 5) {
     formAuthor.style.borderColor = "unset";
   }
 }
@@ -183,13 +234,14 @@ function addNews(title, author, id) {
     score: 0,
   };
 
-  console.log(data);
+  // console.log(data);
   storage.push(data);
-  console.log(storage);
+  // console.log(storage);
   // panggil function finalScorer
   finalScorer(storage);
   // showCard();
   showTable();
+  showHeadlineNews();
 }
 // end form submission
 
@@ -247,15 +299,32 @@ function showTable() {
   tableTd1.style.textAlign = "left";
   const tableTd2 = document.createElement("td");
   tableTd2.innerText = element.score;
+  const tableTd3 = document.createElement("td");
+  const iconTrash = document.createElement("i");
+  iconTrash.classList.add("bi");
+  iconTrash.classList.add("bi-trash3");
+  iconTrash.id = `delete-${element.id}`;
+  iconTrash.addEventListener("click", () => {
+    deleteFunction(event, element.id);
+  });
 
   tableRow.appendChild(tableTh);
   tableRow.appendChild(tableTd1);
   tableRow.appendChild(tableTd2);
+  tableRow.appendChild(tableTd3);
+  tableTd3.appendChild(iconTrash);
   newsTable.appendChild(tableRow);
   // }
 }
 
-function showHeadlineNews() {}
+function showHeadlineNews() {
+  // console.log(titleNewsList);
+  const element = storage[storage.length - 1];
+  const list = document.createElement("li");
+  list.innerText = element.title;
+
+  titleNewsList.appendChild(list);
+}
 
 function allUpperCaseScorer(arrObject) {
   //Cek semua huruf kapital semua atau engga
@@ -394,8 +463,8 @@ function finalScorer(arrObject) {
       e.message = "This is the title that rings in people's ears";
     }
   }
-  console.log(arrObject);
+  // console.log(arrObject);
   return arrObject;
 }
 
-console.log(finalScorer(DUMMY_DATA));
+// console.log(finalScorer(DUMMY_DATA));
