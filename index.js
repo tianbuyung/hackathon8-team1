@@ -51,106 +51,150 @@ const DUMMY_DATA = [
   },
 ];
 
+const newsList = document.querySelector("#newsList");
+const newsTable = document.getElementById("newsTable");
+
+let storage = [...DUMMY_DATA];
+
+finalScorer(storage);
+
+function init() {
+  for (let i = 0; i < 3; i++) {
+    const element = storage[i];
+    // console.log(element);
+    const colSm4 = document.createElement("div");
+    colSm4.classList.add("col-sm-4");
+    colSm4.classList.add("mb-3");
+    const card = document.createElement("div");
+    card.classList.add("card");
+    const cardBody = document.createElement("div");
+    cardBody.classList.add("card-body");
+    const cardTitle = document.createElement("h5");
+    cardTitle.classList.add("card-title");
+    cardTitle.innerText = element.title;
+    const cardText = document.createElement("p");
+    cardText.classList.add("card-text");
+    cardText.innerText = `Score this headline is ${element.score}`;
+    // <a href="#" class="btn btn-primary">Go somewhere</a>
+    const btnCard = document.createElement("a");
+    btnCard.classList.add("btn");
+    btnCard.classList.add("btn-primary");
+    btnCard.href = "#";
+    btnCard.innerText = "Go somewhere";
+
+    cardBody.appendChild(cardTitle);
+    cardBody.appendChild(cardText);
+    cardBody.appendChild(btnCard);
+    card.appendChild(cardBody);
+    colSm4.appendChild(card);
+    newsList.appendChild(colSm4);
+  }
+
+  for (const [i, element] of storage.entries()) {
+    const tableRow = document.createElement("tr");
+    const tableTh = document.createElement("th");
+    tableTh.scope = "row";
+    tableTh.innerText = i + 1;
+    const tableTd1 = document.createElement("td");
+    tableTd1.innerText = element.title;
+    tableTd1.style.textAlign = "left";
+    const tableTd2 = document.createElement("td");
+    tableTd2.innerText = element.score;
+    const tableTd3 = document.createElement("td");
+    tableTd3.innerHTML = `<i class="bi bi-trash3"></i>`;
+
+    tableRow.appendChild(tableTh);
+    tableRow.appendChild(tableTd1);
+    tableRow.appendChild(tableTd2);
+    tableRow.appendChild(tableTd3);
+    newsTable.appendChild(tableRow);
+  }
+}
+
+init();
+
+// form submission
+const addBtn = document.getElementById("addBtn");
+const formTitle = document.getElementById("title");
+const formAuthor = document.getElementById("author");
+
+addBtn.addEventListener("click", (event) => {
+  event.preventDefault(); // stop refresh
+  const title = formTitle.value.trim();
+  const author = formAuthor.value.trim();
+  const id = createId(storage);
+  console.log(title.length, author.length);
+
+  if (title.length === 0) {
+    return;
+  }
+  if (author.length === 0) {
+    return;
+  }
+
+  addNews(title, author, id);
+});
+
+const createId = (data) => {
+  let newID = 1;
+
+  if (data.length > 0) {
+    newID = data[data.length - 1].id + 1;
+  }
+
+  return newID;
+};
+
+// validation form
+function checkForm() {
+  const title = formTitle.value.trim();
+  const author = formAuthor.value.trim();
+
+  if (title === "") {
+    formTitle.style.borderColor = "red";
+  }
+  if (author === "") {
+    formAuthor.style.borderColor = "red";
+  }
+}
+
+addBtn.addEventListener("click", checkForm, true);
+
+function removeError() {
+  const title = formTitle.value;
+  const author = formAuthor.value;
+
+  if (title !== "") {
+    formTitle.style.borderColor = "unset";
+  }
+  if (author !== "") {
+    formAuthor.style.borderColor = "unset";
+  }
+}
+
+formTitle.addEventListener("keydown", removeError);
+formAuthor.addEventListener("keydown", removeError);
+
+function addNews(title, author, id) {
+  let data = {
+    id,
+    title,
+    author,
+    score: 0,
+  };
+
+  console.log(data);
+  storage.push(data);
+  console.log(storage);
+  // panggil function finalScorer
+  finalScorer(storage);
+  // showCard();
+  showTable();
+}
+// end form submission
+
+// create show card
 // const newsList = document.querySelector("#newsList");
-// const newsTable = document.getElementById("newsTable");
-
-// let storage = [...DUMMY_DATA];
-
-// finalScorer(storage);
-
-// function init() {
-//   for (let i = 0; i < storage.length; i++) {
-//     const element = storage[i];
-//     // console.log(element);
-//     const colSm4 = document.createElement("div");
-//     colSm4.classList.add("col-sm-4");
-//     colSm4.classList.add("mb-3");
-//     const card = document.createElement("div");
-//     card.classList.add("card");
-//     const cardBody = document.createElement("div");
-//     cardBody.classList.add("card-body");
-//     const cardTitle = document.createElement("h5");
-//     cardTitle.classList.add("card-title");
-//     cardTitle.innerText = element.title;
-//     const cardText = document.createElement("p");
-//     cardText.classList.add("card-text");
-//     cardText.innerText = `Score this headline is ${element.score}`;
-//     // <a href="#" class="btn btn-primary">Go somewhere</a>
-//     const btnCard = document.createElement("a");
-//     btnCard.classList.add("btn");
-//     btnCard.classList.add("btn-primary");
-//     btnCard.href = "#";
-//     btnCard.innerText = "Go somewhere";
-
-//     cardBody.appendChild(cardTitle);
-//     cardBody.appendChild(cardText);
-//     cardBody.appendChild(btnCard);
-//     card.appendChild(cardBody);
-//     colSm4.appendChild(card);
-//     newsList.appendChild(colSm4);
-
-//     const tableRow = document.createElement("tr");
-//     const tableTh = document.createElement("th");
-//     tableTh.scope = "row";
-//     tableTh.innerText = i + 1;
-//     const tableTd1 = document.createElement("td");
-//     tableTd1.innerText = element.title;
-//     const tableTd2 = document.createElement("td");
-//     tableTd2.innerText = element.score;
-
-//     tableRow.appendChild(tableTh);
-//     tableRow.appendChild(tableTd1);
-//     tableRow.appendChild(tableTd2);
-//     newsTable.appendChild(tableRow);
-//   }
-// }
-
-// init();
-
-// // form submission
-// const addBtn = document.getElementById("addBtn");
-// const formTitle = document.getElementById("title");
-// const formAuthor = document.getElementById("author");
-
-// addBtn.addEventListener("click", (event) => {
-//   event.preventDefault(); // stop refresh
-//   addNews();
-// });
-
-// const createId = (data) => {
-//   let newID = 1;
-
-//   if (data.length > 0) {
-//     newID = data[data.length - 1].id + 1;
-//   }
-
-//   return newID;
-// };
-
-// function addNews() {
-//   const title = formTitle.value;
-//   const author = formAuthor.value;
-//   const id = createId(storage);
-
-//   let data = {
-//     id,
-//     title,
-//     author,
-//     score: 0,
-//   };
-
-//   console.log(data);
-//   storage.push(data);
-//   console.log(storage);
-//   // panggil function finalScorer
-//   finalScorer(storage);
-//   showCard();
-//   showTable();
-// }
-// // end form submission
-
-// // create show card
-// // const newsList = document.querySelector("#newsList");
 
 // function showCard() {
 //   // console.log(DUMMY_DATA);
@@ -185,30 +229,33 @@ const DUMMY_DATA = [
 //   newsList.appendChild(colSm4);
 //   // }
 // }
-// // end show card
+// end show card
 
-// // showTable
-// // const newsTable = document.getElementById("newsTable");
+// showTable
+// const newsTable = document.getElementById("newsTable");
 
-// function showTable() {
-//   // for (let i = 0; i < storage.length; i++) {
-//   const element = storage[storage.length - 1];
-//   // console.log(element);
-//   const tableRow = document.createElement("tr");
-//   const tableTh = document.createElement("th");
-//   tableTh.scope = "row";
-//   tableTh.innerText = storage.length;
-//   const tableTd1 = document.createElement("td");
-//   tableTd1.innerText = element.title;
-//   const tableTd2 = document.createElement("td");
-//   tableTd2.innerText = element.score;
+function showTable() {
+  // for (let i = 0; i < storage.length; i++) {
+  const element = storage[storage.length - 1];
+  // console.log(element);
+  const tableRow = document.createElement("tr");
+  const tableTh = document.createElement("th");
+  tableTh.scope = "row";
+  tableTh.innerText = storage.length;
+  const tableTd1 = document.createElement("td");
+  tableTd1.innerText = element.title;
+  tableTd1.style.textAlign = "left";
+  const tableTd2 = document.createElement("td");
+  tableTd2.innerText = element.score;
 
-//   tableRow.appendChild(tableTh);
-//   tableRow.appendChild(tableTd1);
-//   tableRow.appendChild(tableTd2);
-//   newsTable.appendChild(tableRow);
-//   // }
-// }
+  tableRow.appendChild(tableTh);
+  tableRow.appendChild(tableTd1);
+  tableRow.appendChild(tableTd2);
+  newsTable.appendChild(tableRow);
+  // }
+}
+
+function showHeadlineNews() {}
 
 function allUpperCaseScorer(arrObject) {
   //Cek semua huruf kapital semua atau engga
@@ -236,19 +283,16 @@ function allUpperCaseScorer(arrObject) {
 
 function doubleSpace(arrObject) {
   // console.log(arrObject);
-  let status = false
-  for(const e of arrObject)
-  {
-    for(let i = 0; i < e.title.length; i++)
-    {
-      if(e.title[i] === ' ' && e.title[i+1] === ' ')
-      {
-        status = true
+  let status = false;
+  for (const e of arrObject) {
+    for (let i = 0; i < e.title.length; i++) {
+      if (e.title[i] === " " && e.title[i + 1] === " ") {
+        status = true;
       }
     }
-    e.doubleSpace = status
+    e.doubleSpace = status;
   }
-  return arrObject
+  return arrObject;
 }
 //console.log(firstWordUpperCaseScorer(DUMMY_DATA))
 
@@ -268,114 +312,89 @@ function specialCharacterScorer(arrObject) {
   return arrObject;
 }
 
+function findWord(arr) {
+  for (const e of arr) {
+    let titled = e.title;
 
+    let worded = 0;
+    let kategori = "";
+    let kalimat = false;
 
-function findWord(arr){
-    
-
-  for(const e of arr){
-   
-   
-   let titled = e.title
-   
-   let worded = 0
-   let kategori = ""  
-   let kalimat = false
-   
-   
-   for(let i = 0; i < titled.length; i++){
-     if(titled[i] === " "){
-       worded += 1
-     }else if(i === titled[i].length -1){
-       worded += 1
-     }
-   }
-   for(let j = 0; j < titled.length; j++){
-     
-       if(titled[j] === "."){
-         kalimat = true
-         break;
-       }else if(titled[titled.length -1] === "."){
-         kalimat = false
-         break;
-          }
-     }
- e["sentence"] = kalimat
- e["word"] = worded
- if(e["word"] < 4){
-   kategori = "short"
-}else if(e["word"] < 5 ){
-   kategori = "medium"
-}else if(e["word"] > 5){
-   kategori = "long"
+    for (let i = 0; i < titled.length; i++) {
+      if (titled[i] === " ") {
+        worded += 1;
+      } else if (i === titled[i].length - 1) {
+        worded += 1;
+      }
+    }
+    for (let j = 0; j < titled.length; j++) {
+      if (titled[j] === ".") {
+        kalimat = true;
+        break;
+      } else if (titled[titled.length - 1] === ".") {
+        kalimat = false;
+        break;
+      }
+    }
+    e["sentence"] = kalimat;
+    e["word"] = worded;
+    if (e["word"] < 4) {
+      kategori = "short";
+    } else if (e["word"] < 5) {
+      kategori = "medium";
+    } else if (e["word"] > 5) {
+      kategori = "long";
+    }
+    e["category"] = kategori;
+  }
+  return arr;
 }
-e["category"] = kategori
- 
- }
-  return arr
-} 
-
 
 function finalScorer(arrObject) {
   /////////  PAKE FUNCTION YANG INI
   findWord(arrObject);
   specialCharacterScorer(arrObject);
   allUpperCaseScorer(arrObject);
-  doubleSpace(arrObject)
+  doubleSpace(arrObject);
 
   for (const e of arrObject) {
     let scr = 7;
     if (e.UpperCaseStatus === true) {
-
       scr++;
     }
-    if (e.specChar > 1 && e.specChar <=3) {
+    if (e.specChar > 1 && e.specChar <= 3) {
       scr++;
     }
     if (e["Sentence Category"] === "medium") {
       scr++;
     }
-    if(e.sentence === true)
-    {
-      scr --;
-    }
-    if(e.specChar > 3 )
-    {
-      scr --;
-    }
-    if(e.title.length > 28 && e.title.length < 36)
-    {
-      scr ++;
-    }
-    if(doubleSpace === true)
-    {
+    if (e.sentence === true) {
       scr--;
     }
-   
-   
-    e.score = scr;
-    
-  }
-for(const e of arrObject){
+    if (e.specChar > 3) {
+      scr--;
+    }
+    if (e.title.length > 28 && e.title.length < 36) {
+      scr++;
+    }
+    if (doubleSpace === true) {
+      scr--;
+    }
 
-  if(e.score < 6)
-  {
-    e.message = 'It can be improved'
+    e.score = scr;
   }
-  else if (e.score === 6)
-  {
-    e.message = 'Good, But we can make it better'
+  for (const e of arrObject) {
+    if (e.score < 6) {
+      e.message = "It can be improved";
+    } else if (e.score === 6) {
+      e.message = "Good, But we can make it better";
+    } else if (e.score > 7 && e.score < 9) {
+      e.message = "Well, a slight improvement is needed";
+    } else if (e.score >= 9) {
+      e.message = "This is the title that rings in people's ears";
+    }
   }
-  else if(e.score > 7 && e.score < 9)
-  {
-    e.message = 'Well, a slight improvement is needed'
-  }
-  else if(e.score >= 9)
-  {
-    e.message = "This is the title that rings in people's ears"
-  }
-}
-  console.log(arrObject)
+  console.log(arrObject);
   return arrObject;
 }
 

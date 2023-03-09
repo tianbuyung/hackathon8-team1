@@ -8,14 +8,49 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="container">
-        <div class="news-container">
+    <section class="cover">
+        <div class="container">
+            <div class="row">
+                <div class="col-8" style="margin-top: 20vh;">
+                    <img src="
+                        https://images.unsplash.com/photo-1555664751-23be2d5eaf9d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+                        alt="cover-image" style="width: 50rem;" class="rounded-5">
+                </div>
+                <div class="col-4" style="margin-top: 20vh;">
+                    <div class="pt-5">
+                        <div class="mt-5" id="cover-text-1">
+                            Some news, are not pleasing, some sticks in our mind
+                            There are more pleasing ways of Creating
+                        </div>
+                        <div class="fw-bold" id="cover-text-2">
+                            a Head Line
+                        </div>
+                        <div id="cover-text-3">
+                            with us, <span class="text-decoration-underline">the headline scorer</span>
+                            we can help you send your message, Better. Just by the title
+                        </div>
+                        <hr class="new5">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#headline-section">
+            <div class="arrow-down">
+                <div class="left"></div>
+                <div class="right"></div>
+            </div>
+        </a>
+    </section>
+
+    <section class="container" id="headline-section">
+        <div class="news-container sticky-top" id="headline-news">
             <div class="title">
-                Top News
+                Headline News
             </div>
 
             <ul>
@@ -35,45 +70,47 @@
             <div class="row">
                 <h2 class="text-center">Headline Scorer</h2>
 
-                <form action="#">
-                    <div class="mb-3">
-                        <label class="form-label" for="title">Title:</label>
-                        <input class="form-control" type="text" id="title" name="title">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="author">Author:</label>
-                        <input class="form-control" type="text" id="author" name="author">
-                    </div>
-                    <button id="addBtn" class="btn btn-primary mb-3" type="submit">Submit</button>
-                </form>
+                <div class="d-flex justify-content-center">
+                    <form action="#" class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="title">Title:</label>
+                            <input class="form-control" type="text" id="title" name="title">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="author">Author:</label>
+                            <input class="form-control" type="text" id="author" name="author">
+                        </div>
+                        <button id="addBtn" class="btn btn-primary mb-3" type="submit">Submit</button>
+                    </form>
+                </div>
                 <p class="text-center">If you click the "Submit" button, the form-data will be sent to our database
                     and scoring your title.</p>
+
+                <div class="row text-dark mt-5" id="newsList">
+                </div>
             </div>
         </div>
 
-        <div class="container">
-            <div class="row" id="newsList">
-            </div>
-            <div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Score</th>
-                            <th scope="col">Handle</th>
-                        </tr>
-                    </thead>
-                    <tbody id="newsTable">
-                    </tbody>
-                </table>
-            </div>
+        <div class="section-table mt-5">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Score</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody id="newsTable">
+                </tbody>
+            </table>
         </div>
+    </section>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-            crossorigin="anonymous"></script>
-        <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>
