@@ -114,16 +114,27 @@ function findWord(arr){
    
    let worded = 0
    let kategori = ""  
-   
+   let kalimat = false
    
    
    for(let i = 0; i < titled.length; i++){
-       if(titled[i] === " "){
-         worded += 1
-       }else if(i === titled[i].length -1){
-           worded += 1
-       }
+     if(titled[i] === " "){
+       worded += 1
+     }else if(i === titled[i].length -1){
+       worded += 1
      }
+   }
+   for(let j = 0; j < titled.length; j++){
+     
+       if(titled[j] === "."){
+         kalimat = true
+         break;
+       }else if(titled[titled.length -1] === "."){
+         kalimat = false
+         break;
+          }
+     }
+ e["sentece"] = kalimat
  e["word"] = worded
  if(e["word"] < 4){
    kategori = "short"
@@ -133,7 +144,7 @@ function findWord(arr){
    kategori = "long"
 }
 e["category"] = kategori
- console.log(e["word"])
+ 
  }
   return arr
 } 
