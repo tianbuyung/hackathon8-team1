@@ -254,76 +254,40 @@ function specialCharacterScorer(arrObject) {
   }
   return arrObject;
 }
-// console.log(specialCharacterScorer(DUMMY_DATA))
+console.log(specialCharacterScorer(DUMMY_DATA))
 
-function findWord(arr) {
-  for (const e of arr) {
-    let titled = e.title;
 
-    let worded = 0;
-    let kategori = "";
+function findWord(arr){
+    
 
-    for (let i = 0; i < titled.length; i++) {
-      if (titled[i] === " ") {
-        worded += 1;
-      } else if (i === titled[i].length - 1) {
-        worded += 1;
-      }
-    }
-    e["word"] = worded;
-    if (e["word"] < 4) {
-      kategori = "short";
-    } else if (e["word"] < 5) {
-      kategori = "medium";
-    } else if (e["word"] > 5) {
-      kategori = "long";
-    }
-    e["Sentence Category"] = kategori;
-  }
-  return arr;
+  for(const e of arr){
+   
+   
+   let titled = e.title
+   
+   let worded = 0
+   let kategori = ""  
+   
+   
+   
+   for(let i = 0; i < titled.length; i++){
+       if(titled[i] === " "){
+         worded += 1
+       }else if(i === titled[i].length -1){
+           worded += 1
+       }
+     }
+ e["word"] = worded
+ if(e["word"] < 4){
+   kategori = "short"
+}else if(e["word"] < 5 ){
+   kategori = "medium"
+}else if(e["word"] > 5){
+   kategori = "long"
 }
-// console.log(findWord(DUMMY_DATA))
-
-function finalScorer(arrObject) {
-  /////////  PAKE FUNCTION YANG INI
-  findWord(arrObject);
-  specialCharacterScorer(arrObject);
-  allUpperCaseScorer(arrObject);
-
-  for (const e of arrObject) {
-    let scr = 0;
-    if (e.UpperCaseStatus === true) {
-      scr++;
-    }
-    if (e.specChar > 2) {
-      scr++;
-    }
-    if (e["Sentence Category"] === "medium") {
-      scr++;
-    }
-    e.score = scr;
-  }
-for(const e of arrObject){
-
-  if(e.score === 0)
-  {
-    e.message = 'It can be improved'
-  }
-  else if (e.score === 1)
-  {
-    e.message = 'Good, But we can make it better'
-  }
-  else if(e.score === 2)
-  {
-    e.message = 'Well, a slight improvement is needed'
-  }
-  else if(e.score > 2)
-  {
-    e.message = "This is the title that rings in people's ears"
-  }
-}
-  console.log(arrObject)
-  return arrObject;
-}
-
-console.log(finalScorer(DUMMY_DATA));
+e["category"] = kategori
+ console.log(e["word"])
+ }
+  return arr
+} 
+console.log(findWord(DUMMY_DATA))
